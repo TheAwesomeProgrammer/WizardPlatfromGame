@@ -39,7 +39,7 @@ public class Toggle : MonoBehaviour {
          
     if(mToggleType == toggleType.Elevator)
       {
-            GameObject.Find("Elevator").GetComponent<Elevator>().shouldOperate = true;
+       //     GameObject.Find("Elevator").GetComponent<Elevator>().shouldOperate = true;
       }
           
         

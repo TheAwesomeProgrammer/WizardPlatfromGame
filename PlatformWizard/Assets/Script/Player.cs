@@ -9,6 +9,7 @@ public class Player : AttackScript {
     public float gravity = 20.0F;
     public float secoundsToJump = 2;
     public float maxRage = 100;
+    public float AttackSpeed = 0.5f;
     public float YPostionToDieAt = 50;
 
     public bool hasEnemySeenYou { get; set; }
@@ -19,12 +20,13 @@ public class Player : AttackScript {
     public bool isLatter { get; set; }
 
     public GameObject health;
-    public GameObject rageGameObj;
+   
 
     private Vector3 moveDirection = Vector3.zero;
     private Vector3 startVector;
     
     private float life;
+    private float mTimeToShoot = float.MinValue;
 
     private bool hasScreenChangedOrIsStart = true;
 
@@ -53,7 +55,10 @@ public class Player : AttackScript {
             target = mEnemy;
             distanceFromTarget = Vector3.Distance(target.transform.position, transform.position);
         }
-        attack(); 
+       
+            attack(); 
+        
+     
         move();
         isDead();
         hasEnemySeenYou = false;
@@ -99,13 +104,7 @@ public class Player : AttackScript {
         }
     }
 
-    public void howCloseCanWeBeToTarget()
-    {
-
-        closesYouCanBeToTarget = (target.transform.localScale.x / 2) ;
-
-
-    }
+   
 
     void move()
     {
@@ -173,36 +172,11 @@ public class Player : AttackScript {
 
     public void attack()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetMouseButtonDown(0) && mTimeToShoot < Time.time)
         {
-            if (nextAttack <= Time.time)
-            {
-               
-                nextAttack = Time.time + attackIntervalHeavy;
-                mAnimation.shouldAnimate = animationEnum.secoundAnimation;
-                if (distanceFromTarget < attackRange)
-                {
-                        damangeToDeal = Mathf.Abs(distanceFromTarget - attackDamangeHeavy);
-                        mEnemy.takeDamage(damangeToDeal);
-
-                }
-            }
+            mTimeToShoot =AttackSpeed + Time.time;
+            GameObject.Find("Aim").GetComponent<Aim>().Shot();
         }
-
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (nextAttack <= Time.time)
-            {
-                nextAttack = Time.time + attackIntervalLight;
-                mAnimation.shouldAnimate = animationEnum.firstAnimation;
-                if (distanceFromTarget < attackRange)
-                {
-                        damangeToDeal = Mathf.Abs(distanceFromTarget - attackDamangeLight);
-                        mEnemy.takeDamage(damangeToDeal);
-                }
-            }
-        }
-       
     }
 
     void OnDrawGizmos()

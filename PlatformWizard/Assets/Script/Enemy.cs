@@ -31,13 +31,10 @@ public class Enemy : MonoBehaviour
 
     private bool hasNotAttacked = true;
 
-    private DrawLifeAndRage drawLifeAndRage;
-
 
 	// Use this for initialization
 	public void  Start ()
     {
-        drawLifeAndRage = GameObject.Find("DrawLifeAndRage").GetComponent<DrawLifeAndRage>();
 	    life = MAXLIFE;
 	    lastLife = 0;
 	    
@@ -49,18 +46,7 @@ public class Enemy : MonoBehaviour
 	{
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         distanceFromTarget = Vector2.Distance(player.transform.position, transform.position);
-         if(renderer.isVisible)
-         {
-             GameObject[] healths = GameObject.FindGameObjectsWithTag("Health");
-             if (drawLifeAndRage.sizeOfHealth(healths,transform) <= 0 || life != lastLife)
-             {
-                 drawLifeAndRage.destroyThings(healths, transform);
-                 drawLifeAndRage.drawThings(health, life, transform, new Vector3(transform.position.x - (transform.lossyScale.x / 2) + 0.3f,
-                     transform.position.y + (transform.lossyScale.y / 2) + 0.3f, transform.position.z + 0.5f));
-                 lastLife = life;
-             }
-
-         }
+        
          isDead();
        locatePlayerAndMoveToHim();
 	     howCloseCanWeBeToTarget();
