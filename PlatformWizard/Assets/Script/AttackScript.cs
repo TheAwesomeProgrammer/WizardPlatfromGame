@@ -8,6 +8,7 @@ public class AttackScript : MonoBehaviour {
 
     public float attackRange = 5;
     public  float MAXLIFE= 100;
+    public float Damage;
 
 
     protected float damangeToDeal;

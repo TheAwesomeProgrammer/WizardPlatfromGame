@@ -1,6 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
+public enum ShotType
+{
+    Magic,
+    Fireball,
+    Meatmissile,
+    Boulder
+}
+
 public class Player : AttackScript {
 
     public float MAXSPEED = 6.0F;
@@ -17,6 +25,7 @@ public class Player : AttackScript {
     public float rage { get; set; }
     public float speed { get; set; }
     public float horizontalMovement { get; set; }
+
     public bool isLatter { get; set; }
 
     public GameObject health;
@@ -35,13 +44,15 @@ public class Player : AttackScript {
 
     private GameObject[] mtarget;
 
+    private ShotType mShotType;
+
 	// Use this for initialization
 	void Start ()
 	{
         
       //  Screen.SetResolution(1600, 900, true);
 	    life = MAXLIFE;
-  
+	    mShotType = ShotType.Boulder;
         isLatter = false;
 	    startVector = transform.position;
     }
@@ -58,8 +69,11 @@ public class Player : AttackScript {
        
             attack(); 
         
-     
-        move();
+        
+      
+          move(); 
+      
+        
         isDead();
         hasEnemySeenYou = false;
       
@@ -90,10 +104,12 @@ public class Player : AttackScript {
 
     public void takeDamage(float damage)
     {
-        float tSpeedToLoseLifeWith = 15f * (damage / 5); ;
-        health.transform.Translate(Vector3.left * Time.deltaTime * tSpeedToLoseLifeWith);
+      /*  float tSpeedToLoseLifeWith = 15f * (damage / 5); ;
+        health.transform.Translate(Vector3.left * Time.deltaTime * tSpeedToLoseLifeWith); */
         life -= damage;
-        
+        GetComponent<AnimationPlayer>().HitAnimation(0.1f);
+       
+
     }
 
     void isDead()
@@ -174,8 +190,9 @@ public class Player : AttackScript {
     {
         if (Input.GetMouseButtonDown(0) && mTimeToShoot < Time.time)
         {
-            mTimeToShoot =AttackSpeed + Time.time;
-            GameObject.Find("Aim").GetComponent<Aim>().Shot();
+            
+            mTimeToShoot = AttackSpeed + Time.time;
+            GameObject.Find("Aim").GetComponent<Aim>().Shot(mShotType);
         }
     }
 

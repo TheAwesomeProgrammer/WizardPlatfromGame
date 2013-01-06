@@ -7,13 +7,7 @@ public class Enemy : MonoBehaviour
     public float attackRange = 5;
     public float MAXLIFE = 100;
     public float attackInterval = 1.5f;
-    public float mHowMuchToSlowPlayer = 3;
 
-    public GameObject rage;
-    public GameObject health;
-
-    public float delay = 0.3f;
-    public float lookRange = 20;
     public float speed = 5;
 
     protected float closesYouCanBeToTarget;
@@ -27,7 +21,7 @@ public class Enemy : MonoBehaviour
     private float closesYouCanBeToPlayer;
     private float lastLife;
 
-    private Player player;
+    protected Player player;
 
     private bool hasNotAttacked = true;
 
@@ -48,7 +42,7 @@ public class Enemy : MonoBehaviour
         distanceFromTarget = Vector2.Distance(player.transform.position, transform.position);
         
          isDead();
-       locatePlayerAndMoveToHim();
+      // locatePlayerAndMoveToHim();
 	     howCloseCanWeBeToTarget();
 	    attack();
 
@@ -64,7 +58,7 @@ public class Enemy : MonoBehaviour
     }
 
 
-   void locatePlayerAndMoveToHim()
+ /*  void locatePlayerAndMoveToHim()
     {
         if (distanceFromTarget < lookRange)
         {
@@ -84,33 +78,22 @@ public class Enemy : MonoBehaviour
         
            
         }
-    }
+    } */
 
 
 
-   public void takeDamage(float damage)
+   public virtual void takeDamage(float damage)
    {
-
-       float tSpeedToLoseLifeWith = 15f;
-       if(player.rage < 50)
-       {
-           rage.transform.Translate(Vector3.right * Time.deltaTime * tSpeedToLoseLifeWith);
-       }
-   
        life -= damage;
       
    }
 
-   void isDead()
+   public virtual void  isDead()
    {
        if (life <= 0)
        {
-           if(player.maxRage > player.rage)
-           {
-               player.rage += 5;
-           }
            
-           player.findTarget("Enemy");
+   
            Destroy(gameObject);
        }
    }
@@ -134,12 +117,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position,attackRange);
-        Gizmos.DrawWireSphere(transform.position, lookRange);
-    }
+   
 
+ 
  
 
     void OnTriggerStay(Collider collisionObject)
@@ -149,10 +129,8 @@ public class Enemy : MonoBehaviour
             takeDamage(100);
         }
 
-        if (player.speed > (player.MAXSPEED - mHowMuchToSlowPlayer))
-        {
-            player.speed -= mHowMuchToSlowPlayer;
-        }
+
+       
     }
    
 }
